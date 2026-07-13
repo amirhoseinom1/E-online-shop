@@ -1,13 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from home.models import Product
-from .models import Comment
-from .forms import CommentForm
 
 
 
@@ -65,22 +61,4 @@ class UserLogoutView(View):
         messages.success(request, 'You are logged out successfully', 'success')
         return redirect('home:home')
 
-
-
-
-class CommentCreateView(LoginRequiredMixin, View):
-    def post(self, request, slug):
-        product = get_object_or_404(Product, slug=slug)
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.product = product
-            comment.user = request.user
-            comment.save()
-            messages.success(request, 'Your comment has been submitted and is waiting for approval.')
-        else:
-            messages.error(request, 'Something went wrong. Please try again.')
-
-        return redirect('home:product_detail', slug=product.slug)
 

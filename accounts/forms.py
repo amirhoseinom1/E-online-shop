@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Comment
+from .models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth import authenticate
@@ -77,17 +77,6 @@ class UserLoginForm(forms.Form):
         return cd
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 1,
-                'placeholder': 'Write your comment here...'
-            })
-        }
 
 
 

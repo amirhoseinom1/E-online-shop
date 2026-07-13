@@ -123,15 +123,18 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
+# Authentication & Redirects
+LOGIN_URL = 'accounts:user_login'
+LOGIN_REDIRECT_URL = 'home:home'
+LOGOUT_REDIRECT_URL = 'home:home'
+
+# Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-# Login url
-LOGIN_URL = 'accounts:user_login'
