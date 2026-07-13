@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 50px auto; padding: 20px;">
+    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">
+        <div style="flex: 1; min-width: 300px;">
+            <img src="{{ product.image.url }}" style="width: 100%; border-radius: 10px;">
+        </div>
+        <div style="flex: 1; min-width: 300px;">
+            <h1>{{ product.name }}</h1>
+            <p style="color: #666; font-size: 18px;">{{ product.description }}</p>
+            <p style="font-size: 24px; font-weight: bold; color: #007bff;">${{ product.price }}</p>
+            <small>{{ product.created }}</small>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h3>Comments ({{ comments.count }})</h3>
+        <hr>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for comment in comments %}
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong>{{ comment.user.full_name }}</strong>
+                    <small style="color: #888;">{{ comment.created|date:"Y/m/d H:i" }}</small>
+                </div>
+                <p style="margin-top: 10px;">{{ comment.text }}</p>
+            </div>
+        {% empty %}
+            <p style="color: #888; text-align: center; padding: 20px;">No comments yet. Be the first to comment!</p>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            <div style="margin-top: 30px; background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                <h4>Write a comment</h4>
+                <form action="{% url 'home:comment_create' product.slug %}" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary mt-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 10px 30px; border-radius: 5px; color: white; cursor: pointer;">Submit Comment</button>
+                </form>
+            </div>
+        {% else %}
+            <div style="margin-top: 30px; text-align: center; padding: 20px; background: #f5f5f5; border-radius: 10px;">
+                <p style="margin: 0;">
+                    <a href="{% url 'accounts:user_login' %}" style="color: #764ba2; font-weight: bold;">Login</a> to write a comment.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

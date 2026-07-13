@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_headers %}
+<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
+
+    <div style="text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px; margin: 20px;">
+        <h1 style="font-size: 48px; margin-bottom: 20px;">Welcome to Our Online Shop</h1>
+        <p style="font-size: 20px; margin-bottom: 30px;">Find the best products here</p>
+        <a href="{% url 'home:product_list' %}" style="padding: 15px 40px; background: white; color: #764ba2; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px;">Shop Now</a>
+    </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg bg-light" style="padding: 15px 0;">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 18px;">
+        <li class="nav-item" style="margin: 0 10px;">
+          <a class="nav-link" href="{% url 'home:home' %}" style="font-size: 18px; padding: 12px 20px;">Home</a>
+        </li>
+        <li class="nav-item" style="margin: 0 10px;">
+          <a class="nav-link" href="{% url 'home:product_list' %}" style="font-size: 18px; padding: 12px 20px;">Product</a>
+        </li>
+      </ul>
+
+
+
+      <form class="d-flex" role="search" method="GET" action="{% url 'home:product_list' %}" style="margin: 0 auto;">
+        <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="{{ request.GET.search }}" style="border-color: #764ba2; box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.15); padding: 10px 16px; font-size: 16px; width: 300px;">
+        <button class="btn" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 5px; padding: 10px 24px; font-size: 16px;">Search</button>
+      </form>
+      
+
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-size: 18px;">
+        {% if user.is_authenticated %}
+          <li class="nav-item" style="margin: 0 10px;">
+            <span style="color: #764ba2; font-weight: bold; padding: 12px 20px; display: inline-block;">
+              {{ user.full_name }}
+            </span>
+          </li>
+          <li class="nav-item" style="margin: 0 10px;">
+            <a class="nav-link" href="{% url 'accounts:user_logout' %}" style="font-size: 18px; padding: 12px 20px;">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item" style="margin: 0 10px;">
+            <a class="nav-link" href="{% url 'accounts:user_login' %}" style="font-size: 18px; padding: 12px 20px;">Login</a>
+          </li>
+          <li class="nav-item" style="margin: 0 10px;">
+            <a class="nav-link" href="{% url 'accounts:user_register' %}" style="font-size: 18px; padding: 12px 20px;">Register</a>
+          </li>
+        {% endif %}
+      </ul>
+
+    </div>
+  </div>
+</nav>
