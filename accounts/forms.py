@@ -9,6 +9,7 @@ class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='confirm password', widget=forms.PasswordInput)
 
+
     class Meta:
         model = User
         fields = ('email', 'phone_number', 'full_name')
@@ -38,9 +39,14 @@ class UserChangeForm(forms.ModelForm):
 
 class UserRegistrationForm(forms.Form):
     email = forms.EmailField()
-    full_name = forms.CharField(label='full name')
-    phone = forms.CharField(max_length=11)
-    password = forms.CharField(widget=forms.PasswordInput)
+    full_name = forms.CharField(label='full name', min_length=3)
+    phone = forms.CharField(
+        max_length=11,
+        min_length=11,
+        widget=forms.TextInput(attrs={'type': 'tel'})
+    )
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -59,11 +65,16 @@ class UserRegistrationForm(forms.Form):
             raise ValidationError('This phone number already exists')
         return phone
 
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] and cd['password2'] and cd['password'] != cd['password2']:
+            raise ValidationError('Passwords do not match')
+        return cd['password2']
 
 
 
 class UserLoginForm(forms.Form):
-    phone = forms.CharField(max_length=11)
+    phone = forms.CharField(min_length=11, max_length=11)
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):

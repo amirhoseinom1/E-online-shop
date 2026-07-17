@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
-from django.contrib.auth import get_user_model
-
-
 
 
 class User(AbstractBaseUser):
@@ -19,27 +16,14 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['email', 'full_name']
 
     def __str__(self):
-        return self.email
+        return self.full_name
 
     def has_perm(self, perm, obj=None):
-        return True
+        return self.is_admin
 
     def has_module_perms(self, app_label):
-        return True
+        return self.is_admin
 
     @property
     def is_staff(self):
         return self.is_admin
-
-
-User = get_user_model()
-
-
-
-
-
-
-
-
-
-

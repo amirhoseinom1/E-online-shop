@@ -50,7 +50,7 @@ class UserLoginView(View):
                 messages.success(request, 'You are logged in successfully', 'success')
                 return redirect('home:home')
             else:
-                messages.error(request, 'Email or password is incorrect', 'danger')
+                messages.error(request, 'Phone or password is incorrect', 'danger')
         return render(request, self.template_name, {'form': form})
 
 
@@ -60,5 +60,4 @@ class UserLogoutView(View):
         logout(request)
         messages.success(request, 'You are logged out successfully', 'success')
         return redirect('home:home')
-
 

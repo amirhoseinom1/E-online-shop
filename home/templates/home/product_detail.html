@@ -3,41 +3,49 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 50px auto; padding: 20px;">
-    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">
-        <div style="flex: 1; min-width: 300px;">
+<div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
+
+    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
+
+        <div style="flex: 0 0 300px; min-width: 250px;">
             <img src="{{ product.image.url }}" style="width: 100%; border-radius: 10px;">
         </div>
-        <div style="flex: 1; min-width: 300px;">
+
+        <div style="flex: 1; min-width: 250px;">
             <h1>{{ product.name }}</h1>
-            <p style="color: #666; font-size: 18px;">{{ product.description }}</p>
             <p style="font-size: 24px; font-weight: bold; color: #007bff;">${{ product.price }}</p>
-            <small>{{ product.created }}</small>
+            <p style="color: #666; font-size: 16px; line-height: 1.6;">
+                {{ product.description|truncatewords:100 }}
+            </p>
         </div>
     </div>
 
-    <div style="margin-top: 30px;">
+    <div style="width: 100%; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 20px;">
+        <h4 style="color: #333;">About this item</h4>
+        <p style="color: #555; font-size: 16px; line-height: 1.8; text-align: justify;">
+            {{ product.description }}
+        </p>
+        <p style="margin-top: 15px;"><strong>Created:</strong> {{ product.created|date:"Y/m/d H:i" }}</p>
+    </div>
+
+    <div style="margin-top: 40px;">
         <h3>Comments ({{ comments.count }})</h3>
         <hr>
 
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}" style="padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-                    {{ message }}
-                </div>
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
 
         {% for comment in comments %}
             <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <strong>{{ comment.user.full_name }}</strong>
-                    <small style="color: #888;">{{ comment.created|date:"Y/m/d H:i" }}</small>
-                </div>
+                <strong>{{ comment.user.full_name }}</strong>
+                <small style="color: #888;">{{ comment.created|date:"Y/m/d H:i" }}</small>
                 <p style="margin-top: 10px;">{{ comment.text }}</p>
             </div>
         {% empty %}
-            <p style="color: #888; text-align: center; padding: 20px;">No comments yet. Be the first to comment!</p>
+            <p style="color: #888;">No comments yet. Be the first to comment!</p>
         {% endfor %}
 
         {% if user.is_authenticated %}
@@ -46,15 +54,11 @@
                 <form action="{% url 'home:comment_create' product.slug %}" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary mt-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 10px 30px; border-radius: 5px; color: white; cursor: pointer;">Submit Comment</button>
+                    <button type="submit" class="btn btn-primary mt-3">Submit Comment</button>
                 </form>
             </div>
         {% else %}
-            <div style="margin-top: 30px; text-align: center; padding: 20px; background: #f5f5f5; border-radius: 10px;">
-                <p style="margin: 0;">
-                    <a href="{% url 'accounts:user_login' %}" style="color: #764ba2; font-weight: bold;">Login</a> to write a comment.
-                </p>
-            </div>
+            <p><a href="{% url 'accounts:user_login' %}">Login</a> to write a comment.</p>
         {% endif %}
     </div>
 </div>

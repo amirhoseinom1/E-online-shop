@@ -7,7 +7,6 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     class Meta:
         ordering = ('name',)
-        verbose_name_plural = 'category'
         verbose_name_plural = 'categories'
     def __str__(self):
         return self.name
@@ -41,7 +40,7 @@ class Comment(models.Model):
     is_active = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     def __str__(self):
         return f'{self.user.full_name} - {self.product.name}'

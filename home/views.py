@@ -31,11 +31,9 @@ class ProductDetailView(View):
 class ProductListView(View):
     def get(self, request):
         products = Product.objects.filter(available=True)
-
         search_query = request.GET.get('search')
         if search_query:
             products = products.filter(name__icontains=search_query)
-
 
         paginator = Paginator(products, 8)
         page_number = request.GET.get('page')
@@ -64,5 +62,4 @@ class CommentCreateView(LoginRequiredMixin, View):
             messages.success(request, 'Your comment has been submitted and is waiting for approval.')
         else:
             messages.error(request, 'Something went wrong. Please try again.')
-
         return redirect('home:product_detail', slug=product.slug)

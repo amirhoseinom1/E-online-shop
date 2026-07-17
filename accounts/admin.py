@@ -5,14 +5,11 @@ from .models import User
 from django.contrib.auth.models import Group
 
 
-
-
-
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'phone_number', 'is_admin')
+    list_display = ('full_name', 'email', 'phone_number', 'is_admin')
     list_filter = ('is_admin',)
 
     fieldsets = (

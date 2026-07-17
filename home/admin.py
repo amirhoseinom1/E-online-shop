@@ -23,7 +23,6 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         ('Dates', {
             'fields': ('created', 'updated'),
-            'classes': ('collapse',),
         }),
     )
 
